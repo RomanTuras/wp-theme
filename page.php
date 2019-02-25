@@ -27,7 +27,7 @@
         <div class="col-md-10">
             <div class="container">
                 <?php
-				$args = array( 'post_type' => 'product', 'posts_per_page' => 2 );
+				$args = array( 'post_type' => 'product', 'posts_per_page' => 3 );
 				$the_query = new WP_Query( $args );
 				?>
                 <div id="showcase" class="row">

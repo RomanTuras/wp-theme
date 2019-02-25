@@ -8,7 +8,7 @@ get_header();
 				<div class="row">
 					<div class="col-md-2">
 						<div class="sidenav" >
-							<?php get_sidebar(); ?>
+<!--							--><?php //get_sidebar(); ?>
 						</div>
 					</div>
 				<?php
@@ -19,9 +19,9 @@ get_header();
 
 					get_template_part( 'template-parts/content/content', 'single' ); ?>
 
-							<div class="showcase col-md-4">
+							<div class="showcase col-md-8">
 								<h2><?php the_title(); ?></h2>
-								<span class="post-img"><?php the_post_thumbnail('full'); ?></span>
+								<span class="post-img"><?php the_post_thumbnail('medium'); ?></span>
 								<p><?php the_content(); ?></p>
 							</div>
 

@@ -39,12 +39,13 @@ function renderFilterResult(products){
     var obj = JSON.parse(products);
     console.log(obj);
     for(var i=0; i<obj.length; i++){
-        console.log(obj[i].post_name)
+        console.log(obj[i].title)
         html += '<div class="showcase col-md-4">';
-        html += '<h2>' + obj[i].post_name + '</h2>';
+        html += '<h2>' + obj[i].title + '</h2>';
+        html += '<span class="post-img"><img src="' + obj[i].thumbnail + '"></img></span>';
         html += '<span class="post-img"></span>';
-        html += '<p>' + obj[i].post_content + '</p>';
-        html += '<p><a class="btn btn-secondary" href="" role="button">View details &raquo;</a></p>';
+        html += '<p>' + obj[i].excerpt + '</p>';
+        html += '<p><a class="btn btn-secondary" href="/product/' + obj[i].post_name + '" role="button">View details &raquo;</a></p>';
         html += '</div>';
     }
     return html;

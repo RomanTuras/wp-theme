@@ -6,16 +6,26 @@ class Filter{
 
     function processingFilterParams(){
         if($_GET['param'] == 'all'){
-            $terms = array();
+            $terms = '';
         }else $terms = array($_GET['param']);
-    
-        $products = get_posts( array(
-            'posts_per_page' => 3,
-            'orderby'        => 'rand',
-            'post_type'      => 'product',
-            'manufacturer'   => $terms
-        ) );
-        echo json_encode($products);
+
+        $products_list = array();
+		    $args = array( 'post_type' => 'product', 'posts_per_page' => 3, 'manufacturer'   => $terms );
+		    $the_query = new WP_Query( $args );
+		    if ( $the_query->have_posts() ){
+			    while ( $the_query->have_posts() ){
+				    $the_query->the_post();
+				    array_push($products_list, [
+					    "title" =>  get_the_title(),
+					    "post_name" => get_post_field( 'post_name', get_post() ),
+					    "permalink" => get_the_permalink(),
+					    "excerpt" => get_the_excerpt(),
+					    "thumbnail" => get_the_post_thumbnail_url( null, 'medium' )
+				    ]);
+			    }
+		    }
+		    wp_reset_postdata();
+        echo json_encode($products_list);
         die;
     }
 
