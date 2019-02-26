@@ -4,7 +4,8 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: 'http://www.wp.org/wp-admin/admin-ajax.php',
-            data: 'action=taxonomy&param=' + selectedValues,
+            data: 'action=taxonomy&manufacturers=' +
+            selectedValues['manufacturers'] + '&reliables=' + selectedValues['reliables'],
             success: function(products){
                 var html = renderFilterResult(products)
                 $('div#showcase').html(html);
@@ -20,26 +21,41 @@ $(document).ready(function () {
 function getValueUsingClass(){
     var chkArray = [];
     
-    $(".filterCheckbox:checked").each(function() {
+    $(".manufacturerCheckbox:checked").each(function() {
         chkArray.push($(this).val());
     });
     
-    var selectedValues;
+    var selectedValues = [];
     
     if(chkArray.length > 0){
-        selectedValues = chkArray.join(',');
+        selectedManufacturers = chkArray.join(',');
     }else {
-        selectedValues = 'all';
+        selectedManufacturers = 'all';
     }
+
+    chkArray = [];
+    $(".reliableCheckbox:checked").each(function() {
+        chkArray.push($(this).val());
+    });
+    
+    if(chkArray.length > 0){
+        selectedReliables = chkArray.join(',');
+    }else {
+        selectedReliables = 'all';
+    }
+
+    selectedValues['manufacturers'] = selectedManufacturers; 
+    selectedValues['reliables'] = selectedReliables;
+// console.log(selectedValues['manufacturers']);
     return selectedValues;
 }
 
 function renderFilterResult(products){
     var html = '';
     var obj = JSON.parse(products);
-    console.log(obj);
+    console.log(products);
     for(var i=0; i<obj.length; i++){
-        console.log(obj[i].title)
+        // console.log(obj[i].title)
         html += '<div class="showcase col-md-4">';
         html += '<h2>' + obj[i].title + '</h2>';
         html += '<span class="post-img"><img src="' + obj[i].thumbnail + '"></img></span>';

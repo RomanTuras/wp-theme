@@ -27,9 +27,13 @@
         <div class="col-md-10">
             <div class="container">
                 <?php
-				$args = array( 'post_type' => 'product', 'posts_per_page' => 3 );
-				$the_query = new WP_Query( $args );
-				?>
+				$args = array(
+                    'post_type' => 'product', 
+                    'posts_per_page' => 3,
+                    'paged' => get_query_var('page')
+                );
+                $the_query = new WP_Query( $args );
+                ?>
                 <div id="showcase" class="row">
 					<?php if ( $the_query->have_posts() ) : while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
                         <div class="col col-md-4">
@@ -41,7 +45,7 @@
 					<?php endwhile; ?>
 						<?php wp_reset_postdata(); ?>
                         <nav class="pagination">
-							<?php pagination_bar(); ?>
+							<?php pagination_bar($the_query); ?>
                         </nav>
 
 					<?php else: ?>
@@ -60,26 +64,23 @@
 <?php get_footer(); ?>
 
 <?php
-function pagination_bar() {
-	global $wp_query;
-
-	$total_pages = $wp_query->max_num_pages;
-	echo gget_the_posts_pagination( array(
-		'mid_size' => 2,
-		'prev_text' => __( 'Newer', 'textdomain' ),
-		'next_text' => __( 'Older', 'textdomain' ),
-	) );
+function pagination_bar($the_query) {
+    $total_pages = $the_query->max_num_pages;
+	// echo get_the_posts_pagination( array(
+		// 'mid_size' => 1,
+		// 'prev_text' => __( 'Newer', 'textdomain' ),
+		// 'next_text' => __( 'Older', 'textdomain' ),
+	// ) );
 
 	if ($total_pages > 1){
-		$current_page = max(1, get_query_var('paged'));
-
+		$current_page = max(1, get_query_var('page'));
 		echo paginate_links(array(
 			'base' => get_pagenum_link(1) . '%_%',
-			'format' => '/page/%#%',
+			'format' => 'page/%#%',
 			'current' => $current_page,
 			'total' => $total_pages,
 		));
-	}
+    }
 }
 
 ?>

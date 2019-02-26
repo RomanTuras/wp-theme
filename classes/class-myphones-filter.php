@@ -5,13 +5,33 @@
 class Filter{
 
     function processingFilterParams(){
-        if($_GET['param'] == 'all'){
-            $terms = '';
-        }else $terms = array($_GET['param']);
+
+        if($_GET['manufacturers'] == 'all'){
+            $termsManufacturers = '';
+		}else $termsManufacturers = array($_GET['manufacturers']);
+		
+		if($_GET['reliables'] == 'all'){
+            $termsReliables = '';
+        }else $termsReliables = array($_GET['reliables']);
 
         $products_list = array();
-		    $args = array( 'post_type' => 'product', 'posts_per_page' => 3, 'manufacturer'   => $terms );
-		    $the_query = new WP_Query( $args );
+		    $args = array( 
+				'post_type' => 'product', 
+				'posts_per_page' => 3, 
+				'tax_query' => array(
+					'relation' => 'OR',
+					array(
+						'taxonomy' => 'manufacturer',
+						'terms'   => $termsManufacturers,
+					),
+					// array( 
+					// 	'taxonomy' => 'reliable',
+					// 	'terms' => $termsReliables,
+					// ),
+				),				
+			 );
+			$the_query = new WP_Query( $args );
+			// query_posts($myquery);
 		    if ( $the_query->have_posts() ){
 			    while ( $the_query->have_posts() ){
 				    $the_query->the_post();
