@@ -1,14 +1,14 @@
 <?php
 
-class MyPhonesFilterWidget extends WP_Widget{
+class FilterWidget extends WP_Widget{
 	/**
 	 * Register widget with WordPress.
 	 */
 	function __construct() {
 		parent::__construct(
-			'filter_widget', // Base ID
-			esc_html__( 'Filter', 'text_domain' ), // Name
-			array( 'description' => esc_html__( 'A Filter Widget', 'text_domain' ), ) // Args
+			'filter_manufacturer_widget', // Base ID
+			esc_html__( 'Manufacturer Filter', 'text_domain' ), // Name
+			array( 'description' => esc_html__( 'A Manufacturer Filter Widget', 'text_domain' ), ) // Args
 		);
 	}
 
@@ -25,16 +25,26 @@ class MyPhonesFilterWidget extends WP_Widget{
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
-		 $terms = get_terms( array(
-                          'taxonomy' => 'manufacturer',
-                          'hide_empty' => false,  ) );
+		$terms = get_terms( array(
+						'taxonomy' => 'manufacturer',
+						'hide_empty' => false,  ) );
 
-		 $output = '';
-		 foreach($terms as $term){
-		    $output .= '<input id="' . $term->name . '" class="filterCheckbox" type="checkbox" name="terms" value="' . $term->name . '" /> ' .  $term->name . '<br />';
-		  }
-		  echo $output;
-		  echo '<button id="submit" class="btn btn-secondary" type="submit">show</button>';
+		$output = '<p style="margin-top: 30px;">Manufacturer:</p>';
+		foreach($terms as $term){
+		$output .= '<input id="' . $term->name . '" class="manufacturerCheckbox" type="checkbox" name="terms" value="' . $term->name . '" /> ' .  $term->name . '<br />';
+		}
+		echo $output;
+
+		$terms = get_terms( array(
+			'taxonomy' => 'reliable',
+			'hide_empty' => false,  ) );
+		$output = '<p style="margin-top: 30px;">Reliable:</p>';
+		foreach($terms as $term){
+		$output .= '<input id="' . $term->name . '" class="reliableCheckbox" type="checkbox" name="terms" value="' . $term->name . '" /> ' .  $term->name . '<br />';
+		}
+		echo $output;
+
+		echo '<button id="submit" class="btn btn-secondary" type="submit">show</button>';
 		echo $args['after_widget'];
 	}
 

@@ -1,16 +1,67 @@
 $(document).ready(function () {
+
+    var href = window.location.href;
+    var origin = window.location.origin + '/';
+    // console.log(href);
+    // console.log(origin);
+    if( href != origin) getCheckBoxesState();
+
+    function getCheckBoxesState() {
+        if (typeof(Storage) !== "undefined") {
+            $(".manufacturerCheckbox").each(function() {
+                var name = $(this).val().toString();
+                var val = localStorage.getItem(name);
+                $(this).prop("checked", ( val == 'true' ) ? val = true : val = false);
+            });
+
+            $(".reliableCheckbox").each(function() {
+                var name = $(this).val().toString();
+                var val = localStorage.getItem(name);
+                $(this).prop("checked", ( val == 'true' ) ? val = true : val = false);
+            });
+        } else {
+            console.log('Sorry! No Web Storage support..');
+        }
+    }
+
+    function saveCheckBoxesState() {
+        if (typeof(Storage) !== "undefined") {
+            $(".manufacturerCheckbox").each(function() {
+                var name = $(this).val();
+                localStorage.setItem(name.toString(), $(this).prop('checked'));
+            });
+
+            $(".reliableCheckbox").each(function() {
+                var name = $(this).val();
+                localStorage.setItem(name.toString(), $(this).prop('checked'));
+            });
+        } else {
+            console.log('Sorry! No Web Storage support..');
+        }
+    }
+
+
+
     $("#submit").click(function() {
+        saveCheckBoxesState();
         var selectedValues = getValueUsingClass();
-        $.ajax({
-            type: "GET",
-            url: 'http://www.wp.org/wp-admin/admin-ajax.php',
-            data: 'action=taxonomy&manufacturers=' +
-            selectedValues['manufacturers'] + '&reliables=' + selectedValues['reliables'],
-            success: function(products){
-                var html = renderFilterResult(products)
-                $('div#showcase').html(html);
-            }
-        });
+        window.location = '/filter/?manufacturers=' +
+            selectedValues['manufacturers'] + '&reliables=' + selectedValues['reliables'];
+
+        // $.ajax({
+        //     type: "GET",
+        //     url: 'http://www.wp.org/wp-admin/admin-ajax.php',
+        //     data: 'action=taxonomy&manufacturers=' +
+        //     selectedValues['manufacturers'] + '&reliables=' + selectedValues['reliables'],
+        //     success: function(products){
+        //         console.log(products);
+        //         window.location = '/filter/?manufacturers=' +
+        //             selectedValues['manufacturers'] + '&reliables=' + selectedValues['reliables'];
+        //         // return 0;
+        //         var html = renderFilterResult(products);
+        //         $('#showcase').html(html);
+        //     }
+        // });
     });
 });
 
@@ -28,7 +79,7 @@ function getValueUsingClass(){
     var selectedValues = [];
     
     if(chkArray.length > 0){
-        selectedManufacturers = chkArray.join(',');
+        var selectedManufacturers = chkArray.join(',');
     }else {
         selectedManufacturers = 'all';
     }
@@ -39,7 +90,7 @@ function getValueUsingClass(){
     });
     
     if(chkArray.length > 0){
-        selectedReliables = chkArray.join(',');
+        var selectedReliables = chkArray.join(',');
     }else {
         selectedReliables = 'all';
     }

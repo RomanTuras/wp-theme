@@ -1,15 +1,8 @@
+<?php /* Template Name: Filter Page */ ?>
 
 <?php get_header(); ?>
 
 <main role="main">
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <div class="container">
-            <h1 class="display-3">My Phones page</h1>
-            <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        </div>
-    </div>
 
     <style>
         div .col img{
@@ -17,6 +10,19 @@
             height: 250px !important;
         }
     </style>
+
+	<?php
+        require_once ('classes/class-myphones-filter.php');
+        $filter = new Filter();
+
+        if( isset($_GET['manufacturers']) ) $manufacturers = $_GET['manufacturers'];
+        else $manufacturers = 'all';
+
+        if( isset($_GET['reliables']) ) $reliables = $_GET['reliables'];
+        else $reliables = 'all';
+
+        $query  = $filter->processingFilterParams( $manufacturers, $reliables );
+    ?>
 
     <div class="row">
         <div class="col-md-2">
@@ -26,20 +32,6 @@
         </div>
         <div class="col-md-10">
             <div class="container">
-                <?php
-
-                require_once ('classes/class-myphones-filter.php');
-                $filter = new Filter();
-
-                if( isset($_GET['manufacturers']) ) $manufacturers = $_GET['manufacturers'];
-                else $manufacturers = 'all';
-
-                if( isset($_GET['reliables']) ) $reliables = $_GET['reliables'];
-                else $reliables = 'all';
-
-	            $query = $filter->processingFilterParams( $manufacturers, $reliables );
-
-                ?>
                 <div id="showcase" class="row">
 					<?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
                         <div class="col col-md-4">
