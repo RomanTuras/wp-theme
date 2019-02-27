@@ -22,6 +22,6 @@
 
 **Screenshots**
 
-https://user-images.githubusercontent.com/13946156/53472663-f30d6400-3a70-11e9-9eb9-2242cc23056b.png
+![myphones-home-page](https://user-images.githubusercontent.com/13946156/53472663-f30d6400-3a70-11e9-9eb9-2242cc23056b.png)
 
-https://user-images.githubusercontent.com/13946156/53472686-06203400-3a71-11e9-8dc8-1b567001abc6.png
+![myphones-filter-page](https://user-images.githubusercontent.com/13946156/53472686-06203400-3a71-11e9-8dc8-1b567001abc6.png)
