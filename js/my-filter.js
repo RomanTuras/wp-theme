@@ -2,36 +2,34 @@ $(document).ready(function () {
 
     var href = window.location.href;
     var origin = window.location.origin + '/';
-    // console.log(href);
-    // console.log(origin);
-    if( href != origin) getCheckBoxesState();
+    if(href != origin){
+        getCheckBoxesState(".manufacturerCheckbox");
+        getCheckBoxesState(".reliableCheckbox");
+    }
 
-    function getCheckBoxesState() {
+    /**
+     * Restoring checkboxes state
+     * @param className
+     */
+    function getCheckBoxesState(className) {
         if (typeof(Storage) !== "undefined") {
-            $(".manufacturerCheckbox").each(function() {
+            $(className).each(function() {
                 var name = $(this).val().toString();
                 var val = localStorage.getItem(name);
-                $(this).prop("checked", ( val == 'true' ) ? val = true : val = false);
-            });
-
-            $(".reliableCheckbox").each(function() {
-                var name = $(this).val().toString();
-                var val = localStorage.getItem(name);
-                $(this).prop("checked", ( val == 'true' ) ? val = true : val = false);
+                $(this).prop("checked", ( val == 'true' ));
             });
         } else {
             console.log('Sorry! No Web Storage support..');
         }
     }
 
-    function saveCheckBoxesState() {
+    /**
+     * Saving checkboxes state
+     * @param className
+     */
+    function saveCheckBoxesState(className) {
         if (typeof(Storage) !== "undefined") {
-            $(".manufacturerCheckbox").each(function() {
-                var name = $(this).val();
-                localStorage.setItem(name.toString(), $(this).prop('checked'));
-            });
-
-            $(".reliableCheckbox").each(function() {
+            $(className).each(function() {
                 var name = $(this).val();
                 localStorage.setItem(name.toString(), $(this).prop('checked'));
             });
@@ -43,7 +41,8 @@ $(document).ready(function () {
 
 
     $("#submit").click(function() {
-        saveCheckBoxesState();
+        saveCheckBoxesState(".manufacturerCheckbox");
+        saveCheckBoxesState(".reliableCheckbox");
         var selectedValues = getValueUsingClass();
         window.location = '/filter/?manufacturers=' +
             selectedValues['manufacturers'] + '&reliables=' + selectedValues['reliables'];
@@ -97,7 +96,6 @@ function getValueUsingClass(){
 
     selectedValues['manufacturers'] = selectedManufacturers; 
     selectedValues['reliables'] = selectedReliables;
-// console.log(selectedValues['manufacturers']);
     return selectedValues;
 }
 
